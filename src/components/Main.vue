@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="main">
     <h1>Dein Gutschein Generator</h1>
     <input id="name-input" v-model="name" placeholder="Dein Name..." />
     <div v-if="nameMatches" id="gutschein-text">
@@ -33,8 +33,9 @@ export default {
     this.counter = localStorage.getItem("gutscheinCounter");
 
     if (
-      localStorage.getItem("name").toLowerCase() === "stephie" ||
-      localStorage.getItem("name").toLowerCase() === "stephanie"
+      localStorage.getItem("name") &&
+      (localStorage.getItem("name").toLowerCase() === "stephie" ||
+        localStorage.getItem("name").toLowerCase() === "stephanie")
     ) {
       this.name = localStorage.getItem("name");
     }
@@ -68,15 +69,11 @@ export default {
 </script>
 
 <style scoped>
-#container {
-  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-    "Lucida Sans", Arial, sans-serif;
+#main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.3);
+  margin-top: 2rem;
 }
 
 #name-input {

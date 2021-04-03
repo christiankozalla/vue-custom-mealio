@@ -1,0 +1,28 @@
+{
+  "dishes": [
+    {
+      "name": "Nudeln",
+      "type": "Pasta"
+    },
+    {
+      "name": "Hähnchen-Curry",
+      "type": "Veggie"
+    },
+    {
+      "name": "Spiegelei und Bratkartoffeln",
+      "type": "Veggie"
+    },
+    {
+      "name": "Pizza",
+      "type": "Meat"
+    }
+  ],
+  "types": [
+    "Pasta",
+    "Veggie",
+    "Meat",
+    "Green",
+    "Side",
+    "Sweet"
+  ]
+}

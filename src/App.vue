@@ -1,16 +1,21 @@
 <template>
   <div id="app">
-    <Main />
+    <div id="container">
+      <Main />
+      <Meals />
+    </div>
   </div>
 </template>
 
 <script>
-import Main from "./components/Main";
+import Main from "@/components/Main";
+import Meals from "@/components/Meals";
 
 export default {
   name: "App",
   components: {
     Main,
+    Meals,
   },
 };
 </script>
@@ -36,5 +41,13 @@ body {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#container {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  width: 800px;
+  text-shadow: 2px 2px 1px rgba(255, 255, 255, 0.3);
+  margin: 0 auto;
 }
 </style>
