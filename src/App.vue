@@ -1,18 +1,13 @@
 <template>
-  <div class="container">
-    <!--       <Main /> -->
-    <Meals />
-  </div>
+  <Meals />
 </template>
 
 <script>
-import Main from "@/components/Main";
 import Meals from "@/components/Meals";
 
 export default {
   name: "App",
   components: {
-    Main,
     Meals,
   },
 };

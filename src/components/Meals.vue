@@ -41,19 +41,6 @@
     </div>
     <div class="columns">
       <div class="column has-text-centered">
-        <h3 class="subtitle  mt-4">Cookbook</h3>
-        <div id="cookbook-col" class="p-2">
-          <div
-            v-for="dish in cookbook.dishes"
-            :key="dish.name"
-            class="box is-clickable has-background-info-light"
-            @click="chooseMeal(dish.name)"
-          >
-            {{ dish.name }}
-          </div>
-        </div>
-      </div>
-      <div class="column has-text-centered">
         <h3 class="subtitle mt-4">Wann?</h3>
         <div class="p-2">
           <transition-group name="fade">
@@ -81,6 +68,19 @@
               }}
             </div>
           </transition-group>
+        </div>
+      </div>
+      <div class="column has-text-centered">
+        <h3 class="subtitle  mt-4">Cookbook</h3>
+        <div id="cookbook-col" class="p-2">
+          <div
+            v-for="dish in cookbook.dishes"
+            :key="dish.name"
+            class="box is-clickable has-background-info-light"
+            @click="chooseMeal(dish.name)"
+          >
+            {{ dish.name }}
+          </div>
         </div>
       </div>
     </div>
