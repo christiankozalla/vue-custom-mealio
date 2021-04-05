@@ -1,20 +1,109 @@
 {
   "dishes": [
     {
-      "name": "Nudeln",
-      "type": "Pasta"
+      "name": "Linsen-Auflauf mit Süßkartoffeln"
     },
     {
-      "name": "Hähnchen-Curry",
-      "type": "Veggie"
+      "name": "Käsige Hackbällchen"
     },
     {
-      "name": "Spiegelei und Bratkartoffeln",
-      "type": "Veggie"
+      "name": "Ravioli-Auflauf"
     },
     {
-      "name": "Pizza",
-      "type": "Meat"
+      "name": "Wraps mit Ofengemüse"
+    },
+    {
+      "name": "Gefüllte Paprika-Schoten mit Reis"
+    },
+    {
+      "name": "Risi-Bisi mit Asia-Gemüse"
+    },
+    {
+      "name": "Spitzkohl-Eintopf"
+    },
+    {
+      "name": "Tortellini"
+    },
+    {
+      "name": "Pelmeni"
+    },
+    {
+      "name": "Schupfnudeln mit Sauerkraut"
+    },
+    {
+      "name": "Nudeln mit Spinat-Gorgonzola"
+    },
+    {
+      "name": "Chili sin Carne"
+    },
+    {
+      "name": "Sandwich-Toast"
+    },
+    {
+      "name": "Tomatensuppe"
+    },
+    {
+      "name": "Zwiebelsuppe"
+    },
+    {
+      "name": "Erbsensuppe"
+    },
+    {
+      "name": "Nudeln mit Sahnesauce"
+    },
+    {
+      "name": "Mie-Nudeln"
+    },
+    {
+      "name": "Lasagne"
+    },
+    {
+      "name": "Kartoffeln-Brokkoli-Auflauf"
+    },
+    {
+      "name": "Hühner-Frikassee"
+    },
+    {
+      "name": "Couscous-Salat mit veg. Schnitzeln"
+    },
+    {
+      "name": "Flammkuchen"
+    },
+    {
+      "name": "Süßkartoffel-Pommes mit veg. Schnitzeln"
+    },
+    {
+      "name": "Pizza"
+    },
+    {
+      "name": "Hähnchen-Curry"
+    },
+    {
+      "name": "Nudeln mit Linsen-Bolognese"
+    },
+    {
+      "name": "Spinat, Kartoffeln & Ei"
+    },
+    {
+      "name": "Nudeln mit Wurstsauce"
+    },
+    {
+      "name": "Kartoffelsuppe"
+    },
+    {
+      "name": "Käsespätzle"
+    },
+    {
+      "name": "Fischstäbchen, Kartoffelbrei & Gemüse"
+    },
+    {
+      "name": "Kartoffeln mit Quark"
+    },
+    {
+      "name": "Burger"
+    },
+    {
+      "name": "Nudelsuppe"
     }
   ],
   "types": [

@@ -1,9 +1,14 @@
 <template>
   <div id="meals">
     <h2>Unsere Mittagessen</h2>
-    <ul v-if="meals.length > 0">
-      <li v-for="{ meal, date } in meals" :key="meal.id">
-        {{ meal }} {{ date }}
+    <ul v-if="sortedMeals.length > 0" class="list-style-none">
+      <li
+        v-for="{ meal, date } in sortedMeals"
+        :key="meal.id"
+        class="meals__chosen-list radius"
+      >
+        {{ meal }} -
+        {{ date }}
       </li>
     </ul>
     <ul v-else>
@@ -11,11 +16,11 @@
     </ul>
     <div id="meals__choose" class="radius">
       <h2>Mittagessen wählen</h2>
-      <div id="meals__choose-date" class="radius">
-        {{ newDate ? newDate : "Kein Datum ausgewählt" }}
-      </div>
       <div id="meals__choose-meal" class="radius">
         {{ newMeal ? newMeal : "Kein Essen ausgewählt" }}
+      </div>
+      <div id="meals__choose-date" class="radius">
+        {{ newDate ? newDate : "Kein Datum ausgewählt" }}
       </div>
     </div>
     <div class="grid">
@@ -24,7 +29,7 @@
       </button>
       <div id="meals__dishes">
         <h3 class="meals-headline">Cookbook</h3>
-        <ul class="list-style-none">
+        <ul class="list-style-none" id="meals__dishes-list">
           <li
             v-for="dish in cookbook.dishes"
             :key="dish.name"
@@ -75,6 +80,7 @@ export default {
       meals: [],
       newMeal: "",
       newDate: "",
+      newDateEncoded: null,
       cookbook: {},
       weekDayMap: [
         "Montag",
@@ -87,6 +93,11 @@ export default {
       ],
     };
   },
+  computed: {
+    sortedMeals() {
+      return this.meals.sort((a, b) => (a.milliDate > b.milliDate ? 1 : -1));
+    },
+  },
   methods: {
     addMeal() {
       if (this.newMeal && this.newDate) {
@@ -94,6 +105,7 @@ export default {
           key: `${this.newDate}-${this.newMeal}`,
           meal: this.newMeal,
           date: this.newDate,
+          milliDate: this.newDateEncoded,
         });
         localStorage.setItem("meals", JSON.stringify(this.meals));
         this.showWarning = false;
@@ -110,6 +122,9 @@ export default {
       let chosenDate = new Date(
         new Date().setDate(new Date().getDate() + dayOffset - 1)
       ).toDateString();
+      this.newDateEncoded = new Date()
+        .setDate(new Date().getDate() + dayOffset - 1)
+        .valueOf();
       this.newDate = chosenDate;
     },
     getDayString(dayOffset) {
@@ -195,6 +210,25 @@ export default {
   grid-gap: 1rem;
 }
 
+#meals__dishes-list {
+  height: 400px;
+  overflow-y: scroll;
+  padding: 0 0.3rem;
+}
+
+#meals__dishes-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+#meals__dishes-list::-webkit-scrollbar-track {
+  background: lightslategray;
+}
+
+#meals__dishes-list::-webkit-scrollbar-thumb {
+  background-color: slateblue;
+  border-radius: 5px;
+}
+
 #addMeal {
   grid-column-start: 1;
   grid-column-end: 3;
@@ -239,5 +273,11 @@ export default {
 
 .list-style-none {
   list-style: none;
+}
+
+.meals__chosen-list {
+  margin: 1rem 0;
+  background-image: linear-gradient(24deg, turquoise, tomato);
+  padding: 0.7rem 1rem;
 }
 </style>
