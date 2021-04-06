@@ -45,19 +45,17 @@
         <div class="p-2">
           <transition-group name="fade">
             <div
-              v-for="dayOffset in 7"
-              :key="dayOffset"
+              v-for="day in weekFromNow"
+              :key="day"
               class="box is-clickable"
               :class="{
-                'has-background-primary':
-                  newDate === getFormattedDate(dayOffset - 1),
-                'has-background-warning-light':
-                  newDate !== getFormattedDate(dayOffset - 1),
+                'has-background-primary': newDate === day,
+                'has-background-warning-light': newDate !== day,
               }"
-              v-show="!meals.some((meal) => meal.date === checkDate(dayOffset))"
-              @click="chooseDate(dayOffset - 1)"
+              v-show="!meals.some((meal) => meal.date === day)"
+              @click="newDate = day"
             >
-              {{ getFormattedDate(dayOffset - 1) }}
+              {{ day }}
             </div>
           </transition-group>
         </div>
@@ -73,7 +71,7 @@
               'has-background-primary': newMeal === name,
               'has-background-link-light': newMeal !== name,
             }"
-            @click="chooseMeal(name)"
+            @click="newMeal = name"
           >
             {{ name }}
           </div>
@@ -124,7 +122,6 @@ export default {
       meals: [],
       newMeal: "",
       newDate: "",
-      newDateEncoded: null,
       cookbook: {},
       showQuestion: false,
       weekDayMap: [
@@ -142,6 +139,13 @@ export default {
     sortedMeals() {
       return this.meals.sort((a, b) => (a.milliDate > b.milliDate ? 1 : -1));
     },
+    weekFromNow() {
+      let weekArray = [];
+      for (let i = 0; i < 7; i++) {
+        weekArray.push(this.getFormattedDate(i));
+      }
+      return weekArray;
+    },
   },
   methods: {
     generateUniqueId() {
@@ -156,10 +160,8 @@ export default {
       if (this.newMeal && this.newDate) {
         this.meals.push({
           id: this.generateUniqueId(),
-          key: `${this.newDate}-${this.newMeal}`,
           meal: this.newMeal,
           date: this.newDate,
-          milliDate: this.newDateEncoded,
         });
         localStorage.setItem("meals", JSON.stringify(this.meals));
         this.showWarning = false;
@@ -167,21 +169,6 @@ export default {
       } else {
         this.showWarning = true;
       }
-    },
-    chooseMeal(meal) {
-      this.newMeal = meal;
-    },
-    chooseDate(dayOffset) {
-      let chosenDate = this.getFormattedDate(dayOffset);
-      this.newDateEncoded = new Date()
-        .setDate(new Date().getDate() + dayOffset - 1)
-        .valueOf();
-      this.newDate = chosenDate;
-    },
-    checkDate(dayOffset) {
-      return new Date(
-        new Date().setDate(new Date().getDate() + dayOffset - 1)
-      ).toDateString();
     },
     getDayString(dayOffset) {
       return this.weekDayMap[
