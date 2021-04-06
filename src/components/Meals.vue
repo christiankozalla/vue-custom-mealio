@@ -47,7 +47,13 @@
             <div
               v-for="dayOffset in 7"
               :key="dayOffset"
-              class="box is-clickable has-background-warning-light"
+              class="box is-clickable"
+              :class="{
+                'has-background-primary':
+                  newDate === getFormattedDate(dayOffset - 1),
+                'has-background-warning-light':
+                  newDate !== getFormattedDate(dayOffset - 1),
+              }"
               v-show="!meals.some((meal) => meal.date === checkDate(dayOffset))"
               @click="chooseDate(dayOffset - 1)"
             >
@@ -62,7 +68,11 @@
           <div
             v-for="{ name } in cookbook.dishes"
             :key="name"
-            class="box is-clickable has-background-info-light"
+            class="box is-clickable"
+            :class="{
+              'has-background-primary': newMeal === name,
+              'has-background-link-light': newMeal !== name,
+            }"
             @click="chooseMeal(name)"
           >
             {{ name }}
@@ -70,28 +80,34 @@
         </div>
       </div>
     </div>
-    <transition name="fade">
-      <div v-show="showQuestion" class="box has-background-danger-light">
-        <div class="field has-text-centered is-size-5">
-          Möchtest du <em>wirklich</em> den Speicher löschen?
-        </div>
+    <div class="modal" :class="{ 'is-active': showQuestion }">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box has-background-danger-light">
+          <div class="field has-text-centered is-size-5">
+            Möchtest du <em>wirklich</em> den Speicher löschen?
+          </div>
 
-        <div class="is-flex is-justify-content-space-around">
-          <button class="button is-danger is-medium mr-2" @click="clearStorage">
-            Ja, wirklich!
-          </button>
-          <button
-            class="button is-info is-medium ml-2"
-            @click="showQuestion = false"
-          >
-            Nein, doch nicht.
-          </button>
+          <div class="is-flex is-justify-content-space-around">
+            <button
+              class="button is-danger is-medium mr-2"
+              @click="clearStorage"
+            >
+              Ja, wirklich!
+            </button>
+            <button
+              class="button is-info is-medium ml-2"
+              @click="showQuestion = false"
+            >
+              Nein, doch nicht.
+            </button>
+          </div>
         </div>
       </div>
-    </transition>
+    </div>
     <button
       v-show="!showQuestion"
-      class="button is-fullwidth is-danger mt-6"
+      class="button is-fullwidth is-danger my-6"
       @click="showQuestion = true"
     >
       Lösche Speicher
@@ -203,6 +219,7 @@ export default {
     },
     clearStorage() {
       this.meals = [];
+      this.showQuestion = false;
       localStorage.clear();
     },
   },
