@@ -9,10 +9,7 @@
           class="box my-2 p-2 has-text-white has-background-info-dark is-flex is-justify-content-space-between is-align-items-center"
         >
           {{ date }} - {{ meal }}
-          <button
-            class="button is-small is-danger ml-1"
-            @click="removeMeal(id)"
-          >
+          <button class="delete ml-1" @click="removeMeal(id)">
             &times;
           </button>
         </li>
@@ -29,7 +26,7 @@
       <h2 class="subtitle has-text-centered mt-4">Mittagessen wählen</h2>
       <div
         class="box my-2 p-2 has-background-success-light has-text-centered is-size-5 is-clickable"
-        @click="isCookbookModalOpen = true"
+        @click="openCookbookModal"
       >
         <span class="icon mr-3"
           ><img
@@ -81,9 +78,9 @@
           @click="isCookbookModalOpen = false"
         ></div>
         <div class="modal-content">
-          <div class="box has-background-link-lignt">
+          <div class="box">
             <div class="is-flex is-justify-content-space-between">
-              <h3 class="subtitle  mt-4">Cookbook</h3>
+              <h3 class="subtitle mt-4">Cookbook</h3>
               <button
                 class="button is-danger"
                 @click="isCookbookModalOpen = false"
@@ -91,7 +88,6 @@
                 &times;
               </button>
             </div>
-
             <div
               v-for="{ name } in cookbook.dishes"
               :key="name"
@@ -201,19 +197,19 @@ export default {
           date: this.newDate,
         });
         localStorage.setItem("meals", JSON.stringify(this.meals));
-        this.showWarning = false;
         this.resetMeal();
-      } else {
-        this.showWarning = true;
       }
     },
+    openCookbookModal() {
+      setTimeout(() => (this.isCookbookModalOpen = true), 100);
+    },
     chooseMeal(meal) {
-      setTimeout(() => (this.isCookbookModalOpen = false), 900);
+      setTimeout(() => (this.isCookbookModalOpen = false), 1300);
       let toggleBackground = setInterval(
         () => (this.newMeal = this.newMeal ? null : meal),
         170
       );
-      setTimeout(() => clearInterval(toggleBackground), 700);
+      setTimeout(() => clearInterval(toggleBackground), 900);
       this.newMeal = meal;
     },
     getDayString(dayOffset) {
@@ -283,5 +279,17 @@ export default {
 
 .meal-text-chosen {
   vertical-align: 4px;
+}
+
+@media (min-width: 500px) {
+  .modal-content::-webkit-scrollbar {
+    width: 4px;
+    background-color: lightgray;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 2px;
+  }
 }
 </style>
