@@ -49,23 +49,9 @@
               :key="dayOffset"
               class="box is-clickable has-background-warning-light"
               v-show="!meals.some((meal) => meal.date === checkDate(dayOffset))"
-              @click="chooseDate(dayOffset)"
+              @click="chooseDate(dayOffset - 1)"
             >
-              {{ getDayString(dayOffset) }}
-              {{
-                new Date(new Date().setDate(new Date().getDate() + dayOffset))
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")
-              }}.{{
-                (
-                  new Date(
-                    new Date().setDate(new Date().getDate() + dayOffset)
-                  ).getMonth() + 1
-                )
-                  .toString()
-                  .padStart(2, "0")
-              }}
+              {{ getFormattedDate(dayOffset - 1) }}
             </div>
           </transition-group>
         </div>
@@ -74,18 +60,41 @@
         <h3 class="subtitle  mt-4">Cookbook</h3>
         <div id="cookbook-col" class="p-2">
           <div
-            v-for="dish in cookbook.dishes"
-            :key="dish.name"
+            v-for="{ name } in cookbook.dishes"
+            :key="name"
             class="box is-clickable has-background-info-light"
-            @click="chooseMeal(dish.name)"
+            @click="chooseMeal(name)"
           >
-            {{ dish.name }}
+            {{ name }}
           </div>
         </div>
       </div>
     </div>
-    <button class="button is-fullwidth is-danger mt-6" @click="clearStorage">
-      Lösche Speicher!
+    <transition name="fade">
+      <div v-show="showQuestion" class="box has-background-danger-light">
+        <div class="field has-text-centered is-size-5">
+          Möchtest du <em>wirklich</em> den Speicher löschen?
+        </div>
+
+        <div class="is-flex is-justify-content-space-around">
+          <button class="button is-danger is-medium mr-2" @click="clearStorage">
+            Ja, wirklich!
+          </button>
+          <button
+            class="button is-info is-medium ml-2"
+            @click="showQuestion = false"
+          >
+            Nein, doch nicht.
+          </button>
+        </div>
+      </div>
+    </transition>
+    <button
+      v-show="!showQuestion"
+      class="button is-fullwidth is-danger mt-6"
+      @click="showQuestion = true"
+    >
+      Lösche Speicher
     </button>
   </div>
 </template>
@@ -101,14 +110,15 @@ export default {
       newDate: "",
       newDateEncoded: null,
       cookbook: {},
+      showQuestion: false,
       weekDayMap: [
+        "Sonntag",
         "Montag",
         "Dienstag",
         "Mittwoch",
         "Donnerstag",
         "Freitag",
         "Samstag",
-        "Sonntag",
       ],
     };
   },
@@ -146,9 +156,7 @@ export default {
       this.newMeal = meal;
     },
     chooseDate(dayOffset) {
-      let chosenDate = new Date(
-        new Date().setDate(new Date().getDate() + dayOffset - 1)
-      ).toDateString();
+      let chosenDate = this.getFormattedDate(dayOffset);
       this.newDateEncoded = new Date()
         .setDate(new Date().getDate() + dayOffset - 1)
         .valueOf();
@@ -161,10 +169,26 @@ export default {
     },
     getDayString(dayOffset) {
       return this.weekDayMap[
-        new Date(
-          new Date().setDate(new Date().getDate() + dayOffset - 1)
-        ).getDay()
+        new Date(new Date().setDate(new Date().getDate() + dayOffset)).getDay()
       ];
+    },
+    getFormattedDate(dayOffset) {
+      let dayNameString = this.getDayString(dayOffset);
+      let dayString = new Date(
+        new Date().setDate(new Date().getDate() + dayOffset)
+      )
+        .getDate()
+        .toString()
+        .padStart(2, "0");
+      let monthString = (
+        new Date(
+          new Date().setDate(new Date().getDate() + dayOffset)
+        ).getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0");
+
+      return dayNameString + " - " + dayString + "." + monthString;
     },
     resetMeal() {
       this.newMeal = "";
