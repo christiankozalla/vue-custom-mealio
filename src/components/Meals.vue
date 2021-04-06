@@ -9,7 +9,10 @@
           class="box my-2 p-2 has-text-white has-background-info-dark is-flex is-justify-content-space-between is-align-items-center"
         >
           {{ date }} - {{ meal }}
-          <button class="button is-small is-danger" @click="removeMeal(id)">
+          <button
+            class="button is-small is-danger ml-1"
+            @click="removeMeal(id)"
+          >
             &times;
           </button>
         </li>
@@ -24,19 +27,30 @@
     </ul>
     <div>
       <h2 class="subtitle has-text-centered mt-4">Mittagessen wählen</h2>
-      <div class="box my-2 p-2 has-background-grey-lighter has-text-centered">
-        {{ newMeal ? newMeal : "Kein Essen ausgewählt" }}
+      <div
+        class="box my-2 p-2 has-background-success-light has-text-centered is-size-5 is-clickable"
+        @click="isCookbookModalOpen = true"
+      >
+        <span class="icon mr-3"
+          ><img
+            src="@/assets/restaurant-outline.svg"
+            alt="Restaurant Icon for Meal"
+        /></span>
+        <span class="meal-text-chosen">{{
+          newMeal ? newMeal : "Hier Essen auswählen!"
+        }}</span>
       </div>
-      <div class="box my-2 p-2 has-background-grey-lighter has-text-centered">
-        {{ newDate ? newDate : "Kein Datum ausgewählt" }}
-      </div>
-      <div class="buttons is-centered">
-        <button
-          class="button is-primary is-large is-fullwidth"
-          @click="addMeal"
-        >
-          Meal hinzufügen!
-        </button>
+      <div
+        class="box my-2 p-2 has-background-success-light has-text-centered is-size-5"
+      >
+        <span class="icon mr-3"
+          ><img
+            src="@/assets/calendar-outline.svg"
+            alt="Restaurant Icon for Meal"
+        /></span>
+        <span class="meal-text-chosen">{{
+          newDate ? newDate : "Datum unten auswählen"
+        }}</span>
       </div>
     </div>
     <div class="columns">
@@ -60,24 +74,47 @@
           </transition-group>
         </div>
       </div>
-      <div class="column has-text-centered">
-        <h3 class="subtitle  mt-4">Cookbook</h3>
-        <div id="cookbook-col" class="p-2">
-          <div
-            v-for="{ name } in cookbook.dishes"
-            :key="name"
-            class="box is-clickable"
-            :class="{
-              'has-background-primary': newMeal === name,
-              'has-background-link-light': newMeal !== name,
-            }"
-            @click="newMeal = name"
-          >
-            {{ name }}
+
+      <div class="modal" :class="{ 'is-active': isCookbookModalOpen }">
+        <div
+          class="modal-background"
+          @click="isCookbookModalOpen = false"
+        ></div>
+        <div class="modal-content">
+          <div class="box has-background-link-lignt">
+            <div class="is-flex is-justify-content-space-between">
+              <h3 class="subtitle  mt-4">Cookbook</h3>
+              <button
+                class="button is-danger"
+                @click="isCookbookModalOpen = false"
+              >
+                &times;
+              </button>
+            </div>
+            <div id="cookbook-col" class="p-2">
+              <div
+                v-for="{ name } in cookbook.dishes"
+                :key="name"
+                class="box is-clickable"
+                :class="{
+                  'has-background-primary': newMeal === name,
+                  'has-background-link-light': newMeal !== name,
+                }"
+                @click="chooseMeal(name)"
+              >
+                {{ name }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="buttons is-centered">
+      <button class="button is-primary is-large is-fullwidth" @click="addMeal">
+        Meal hinzufügen!
+      </button>
+    </div>
+    <hr />
     <div class="modal" :class="{ 'is-active': showQuestion }">
       <div class="modal-background"></div>
       <div class="modal-content">
@@ -124,6 +161,7 @@ export default {
       newDate: "",
       cookbook: {},
       showQuestion: false,
+      isCookbookModalOpen: false,
       weekDayMap: [
         "Sonntag",
         "Montag",
@@ -169,6 +207,15 @@ export default {
       } else {
         this.showWarning = true;
       }
+    },
+    chooseMeal(meal) {
+      setTimeout(() => (this.isCookbookModalOpen = false), 900);
+      let toggleBackground = setInterval(
+        () => (this.newMeal = this.newMeal ? null : meal),
+        170
+      );
+      setTimeout(() => clearInterval(toggleBackground), 700);
+      this.newMeal = meal;
     },
     getDayString(dayOffset) {
       return this.weekDayMap[
@@ -251,5 +298,9 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.meal-text-chosen {
+  vertical-align: 4px;
 }
 </style>
