@@ -91,19 +91,18 @@
                 &times;
               </button>
             </div>
-            <div id="cookbook-col" class="p-2">
-              <div
-                v-for="{ name } in cookbook.dishes"
-                :key="name"
-                class="box is-clickable"
-                :class="{
-                  'has-background-primary': newMeal === name,
-                  'has-background-link-light': newMeal !== name,
-                }"
-                @click="chooseMeal(name)"
-              >
-                {{ name }}
-              </div>
+
+            <div
+              v-for="{ name } in cookbook.dishes"
+              :key="name"
+              class="box is-clickable"
+              :class="{
+                'has-background-primary': newMeal === name,
+                'has-background-link-light': newMeal !== name,
+              }"
+              @click="chooseMeal(name)"
+            >
+              {{ name }}
             </div>
           </div>
         </div>
@@ -273,24 +272,6 @@ export default {
 </script>
 
 <style scoped>
-#cookbook-col {
-  max-height: 600px;
-  overflow-y: scroll;
-}
-
-#cookbook-col::-webkit-scrollbar {
-  width: 10px;
-}
-
-#cookbook-col::-webkit-scrollbar-track {
-  background: white;
-}
-
-#cookbook-col::-webkit-scrollbar-thumb {
-  background-color: slateblue;
-  border-radius: 5px;
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
