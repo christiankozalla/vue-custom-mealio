@@ -62,7 +62,7 @@
             </button>
           </div>
           <div
-            v-for="day in weekFromNow"
+            v-for="{ day, milliDate } in weekFromNow"
             :key="day"
             class="box is-clickable"
             :class="{
@@ -70,7 +70,7 @@
               'has-background-warning-light': newDate !== day,
             }"
             v-show="!meals.some((meal) => meal.date === day)"
-            @click="chooseDate(day)"
+            @click="chooseDate(day, milliDate)"
           >
             {{ day }}
           </div>
@@ -109,16 +109,18 @@
 
     <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menue Week</h3>
     <ul v-if="sortedMeals.length > 0">
-      <li
-        v-for="{ meal, date, id } in sortedMeals"
-        :key="id"
-        class="box my-2 p-3 has-text-black is-size-5 has-background-info is-flex is-justify-content-space-between is-align-items-center"
-      >
-        {{ date }} - {{ meal }}
-        <button class="delete ml-1" @click="removeMeal(id)">
-          &times;
-        </button>
-      </li>
+      <transition-group name="fade">
+        <li
+          v-for="{ meal, date, id } in sortedMeals"
+          :key="id"
+          class="box my-2 p-3 has-text-black is-size-5 has-background-info is-flex is-justify-content-space-between is-align-items-center"
+        >
+          {{ date }} - {{ meal }}
+          <button class="delete ml-1" @click="removeMeal(id)">
+            &times;
+          </button>
+        </li>
+      </transition-group>
     </ul>
     <ul v-else>
       <li class="box my-2 p-2 has-background-warning-light has-text-centered">
@@ -177,6 +179,7 @@ export default {
       meals: [],
       newMeal: "",
       newDate: "",
+      newMilliDate: null,
       cookbook: {},
       showQuestion: false,
       isCookbookModalOpen: false,
@@ -219,6 +222,7 @@ export default {
           id: this.generateUniqueId(),
           meal: this.newMeal,
           date: this.newDate,
+          milliDate: this.newMilliDate,
         });
         localStorage.setItem("meals", JSON.stringify(this.meals));
         this.resetMeal();
@@ -234,8 +238,9 @@ export default {
       this.newMeal = meal;
       setTimeout(() => (this.isCookbookModalOpen = false), 500);
     },
-    chooseDate(day) {
+    chooseDate(day, milliDate) {
       this.newDate = day;
+      this.newMilliDate = milliDate;
       setTimeout(() => (this.isDatePickerModalOpen = false), 500);
     },
     getDayString(dayOffset) {
@@ -245,12 +250,14 @@ export default {
     },
     getFormattedDate(dayOffset) {
       let dayNameString = this.getDayString(dayOffset);
+
       let dayString = new Date(
         new Date().setDate(new Date().getDate() + dayOffset)
       )
         .getDate()
         .toString()
         .padStart(2, "0");
+
       let monthString = (
         new Date(
           new Date().setDate(new Date().getDate() + dayOffset)
@@ -259,7 +266,12 @@ export default {
         .toString()
         .padStart(2, "0");
 
-      return dayNameString + " - " + dayString + "." + monthString;
+      let formattedDate = dayNameString + " - " + dayString + "." + monthString;
+      let milliDate = new Date(
+        new Date().setDate(new Date().getDate() + dayOffset)
+      ).valueOf();
+
+      return { day: formattedDate, milliDate: milliDate };
     },
     resetMeal() {
       this.newMeal = "";
@@ -308,5 +320,14 @@ export default {
     background-color: #555;
     border-radius: 2px;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
