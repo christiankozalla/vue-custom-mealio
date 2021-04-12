@@ -1,31 +1,17 @@
 <template>
   <div class="container is-max-desktop mt-2 px-2">
-    <h2 class="title has-text-centered">Unsere Mittagessen</h2>
-    <ul v-if="sortedMeals.length > 0">
-      <transition-group name="fade">
-        <li
-          v-for="{ meal, date, id } in sortedMeals"
-          :key="id"
-          class="box my-2 p-2 has-text-white has-background-info-dark is-flex is-justify-content-space-between is-align-items-center"
-        >
-          {{ date }} - {{ meal }}
-          <button class="delete ml-1" @click="removeMeal(id)">
-            &times;
-          </button>
-        </li>
-      </transition-group>
-    </ul>
-    <ul v-else>
-      <li
-        class="box my-2 p-2 has-text-white has-background-danger-dark has-text-centered"
-      >
-        Keine Essen
-      </li>
-    </ul>
-    <div>
-      <h2 class="subtitle has-text-centered mt-4">Mittagessen wählen</h2>
+    <h1 class="title is-size-2 has-text-centered">Koala Menue</h1>
+    <h2 class="is-size-3 has-text-centered my-4">
+      Create your weekly meal plan
+    </h2>
+    <h2 class="is-size-3 has-text-centered mb-4">
+      like <span class="has-text-primary is-italic">one, </span>
+      <span class="has-text-info is-italic">two, </span>
+      <span class="has-text-danger is-italic">three</span>
+    </h2>
+    <div class="mx-6">
       <div
-        class="box my-2 p-2 has-background-success-light has-text-centered is-size-5 is-clickable"
+        class="box my-2 p-2 has-background-primary has-text-black has-text-centered is-size-5 is-clickable"
         @click="openCookbookModal"
       >
         <span class="icon mr-3"
@@ -34,11 +20,13 @@
             alt="Restaurant Icon for Meal"
         /></span>
         <span class="meal-text-chosen">{{
-          newMeal ? newMeal : "Hier Essen auswählen!"
+          newMeal ? newMeal : "Choose your meal!"
         }}</span>
       </div>
+
       <div
-        class="box my-2 p-2 has-background-success-light has-text-centered is-size-5"
+        class="box my-2 p-2 has-background-info has-text-black has-text-centered is-size-5 is-clickable"
+        @click="openDatePickerModal"
       >
         <span class="icon mr-3"
           ><img
@@ -46,76 +34,104 @@
             alt="Restaurant Icon for Meal"
         /></span>
         <span class="meal-text-chosen">{{
-          newDate ? newDate : "Datum unten auswählen"
+          newDate ? newDate : "Choose the date!"
         }}</span>
       </div>
+      <button
+        class="button is-danger is-size-5 is-fullwidth px-6"
+        @click="addMeal"
+      >
+        Add meal!
+      </button>
     </div>
-    <div class="columns">
-      <div class="column has-text-centered">
-        <h3 class="subtitle mt-4">Wann?</h3>
-        <div class="p-2">
-          <transition-group name="fade">
-            <div
-              v-for="day in weekFromNow"
-              :key="day"
-              class="box is-clickable"
-              :class="{
-                'has-background-primary': newDate === day,
-                'has-background-warning-light': newDate !== day,
-              }"
-              v-show="!meals.some((meal) => meal.date === day)"
-              @click="newDate = day"
-            >
-              {{ day }}
-            </div>
-          </transition-group>
-        </div>
-      </div>
 
-      <div class="modal" :class="{ 'is-active': isCookbookModalOpen }">
-        <div
-          class="modal-background"
-          @click="isCookbookModalOpen = false"
-        ></div>
-        <div class="modal-content">
-          <div class="box">
-            <div class="is-flex is-justify-content-space-between">
-              <h3 class="subtitle mt-4">Cookbook</h3>
-              <button
-                class="button is-danger"
-                @click="isCookbookModalOpen = false"
-              >
-                &times;
-              </button>
-            </div>
-            <div
-              v-for="{ name } in cookbook.dishes"
-              :key="name"
-              class="box is-clickable"
-              :class="{
-                'has-background-primary': newMeal === name,
-                'has-background-link-light': newMeal !== name,
-              }"
-              @click="chooseMeal(name)"
+    <div class="modal" :class="{ 'is-active': isDatePickerModalOpen }">
+      <div
+        class="modal-background"
+        @click="isDatePickerModalOpen = false"
+      ></div>
+      <div class="modal-content">
+        <div class="box">
+          <div class="is-flex is-justify-content-space-between">
+            <h2 class="subtitle mt-4">When?</h2>
+            <button
+              class="button is-danger"
+              @click="isDatePickerModalOpen = false"
             >
-              {{ name }}
-            </div>
+              &times;
+            </button>
+          </div>
+          <div
+            v-for="day in weekFromNow"
+            :key="day"
+            class="box is-clickable"
+            :class="{
+              'has-background-primary': newDate === day,
+              'has-background-warning-light': newDate !== day,
+            }"
+            v-show="!meals.some((meal) => meal.date === day)"
+            @click="chooseDate(day)"
+          >
+            {{ day }}
           </div>
         </div>
       </div>
     </div>
-    <div class="buttons is-centered">
-      <button class="button is-primary is-large is-fullwidth" @click="addMeal">
-        Meal hinzufügen!
-      </button>
+
+    <div class="modal" :class="{ 'is-active': isCookbookModalOpen }">
+      <div class="modal-background" @click="isCookbookModalOpen = false"></div>
+      <div class="modal-content">
+        <div class="box">
+          <div class="is-flex is-justify-content-space-between">
+            <h3 class="subtitle mt-4">Cookbook</h3>
+            <button
+              class="button is-danger"
+              @click="isCookbookModalOpen = false"
+            >
+              &times;
+            </button>
+          </div>
+          <div
+            v-for="{ name } in cookbook.dishes"
+            :key="name"
+            class="box is-clickable"
+            :class="{
+              'has-background-primary': newMeal === name,
+              'has-background-link-light': newMeal !== name,
+            }"
+            @click="chooseMeal(name)"
+          >
+            {{ name }}
+          </div>
+        </div>
+      </div>
     </div>
+
+    <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menue Week</h3>
+    <ul v-if="sortedMeals.length > 0">
+      <li
+        v-for="{ meal, date, id } in sortedMeals"
+        :key="id"
+        class="box my-2 p-3 has-text-black is-size-5 has-background-info is-flex is-justify-content-space-between is-align-items-center"
+      >
+        {{ date }} - {{ meal }}
+        <button class="delete ml-1" @click="removeMeal(id)">
+          &times;
+        </button>
+      </li>
+    </ul>
+    <ul v-else>
+      <li class="box my-2 p-2 has-background-warning-light has-text-centered">
+        No meals yet
+      </li>
+    </ul>
     <hr />
     <div class="modal" :class="{ 'is-active': showQuestion }">
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="box has-background-danger-light">
           <div class="field has-text-centered is-size-5">
-            Möchtest du <em>wirklich</em> den Speicher löschen?
+            Do you <em>really</em> want to clear your meal plan?
           </div>
 
           <div class="is-flex is-justify-content-space-around">
@@ -123,25 +139,32 @@
               class="button is-danger is-medium mr-2"
               @click="clearStorage"
             >
-              Ja, wirklich!
+              Yes, for sure!
             </button>
             <button
               class="button is-info is-medium ml-2"
               @click="showQuestion = false"
             >
-              Nein, doch nicht.
+              Nay, cancel.
             </button>
           </div>
         </div>
       </div>
     </div>
-    <button
-      v-show="!showQuestion"
-      class="button is-fullwidth is-danger my-6"
-      @click="showQuestion = true"
-    >
-      Lösche Speicher
-    </button>
+    <div class="is-flex is-justify-content-space-between mb-3">
+      <button class="button is-link">
+        <span class="icon mr-2"
+          ><img src="@/assets/logo-twitter.svg" alt="Twitter Logo Icon"/></span
+        >Tell your friends!
+      </button>
+      <button
+        v-show="!showQuestion"
+        class="button is-danger"
+        @click="showQuestion = true"
+      >
+        Clear plan
+      </button>
+    </div>
   </div>
 </template>
 
@@ -157,14 +180,15 @@ export default {
       cookbook: {},
       showQuestion: false,
       isCookbookModalOpen: false,
+      isDatePickerModalOpen: false,
       weekDayMap: [
-        "Sonntag",
-        "Montag",
-        "Dienstag",
-        "Mittwoch",
-        "Donnerstag",
-        "Freitag",
-        "Samstag",
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
       ],
     };
   },
@@ -203,14 +227,16 @@ export default {
     openCookbookModal() {
       setTimeout(() => (this.isCookbookModalOpen = true), 100);
     },
+    openDatePickerModal() {
+      setTimeout(() => (this.isDatePickerModalOpen = true), 100);
+    },
     chooseMeal(meal) {
-      setTimeout(() => (this.isCookbookModalOpen = false), 1300);
-      let toggleBackground = setInterval(
-        () => (this.newMeal = this.newMeal ? null : meal),
-        170
-      );
-      setTimeout(() => clearInterval(toggleBackground), 900);
       this.newMeal = meal;
+      setTimeout(() => (this.isCookbookModalOpen = false), 500);
+    },
+    chooseDate(day) {
+      this.newDate = day;
+      setTimeout(() => (this.isDatePickerModalOpen = false), 500);
     },
     getDayString(dayOffset) {
       return this.weekDayMap[
@@ -268,15 +294,6 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .meal-text-chosen {
   vertical-align: 4px;
 }
