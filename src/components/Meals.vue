@@ -161,7 +161,7 @@
         </div>
       </div>
     </div>
-    <div class="is-flex is-justify-content-space-between mb-3">
+    <div class="is-flex is-justify-content-space-between mb-2">
       <button class="button is-info">
         <span class="icon mr-2"
           ><img src="@/assets/logo-twitter.svg" alt="Twitter Logo Icon"/></span
@@ -176,7 +176,7 @@
       </button>
     </div>
     <a
-      class="button is-fullwidth has-background-primary is-size-5"
+      class="button is-fullwidth has-background-primary is-size-5 mb-3"
       rel="noopener"
       target="_blank"
       href="https://github.com/christiankozalla/vue-family-meal"

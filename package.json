@@ -8,11 +8,27 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "register-service-worker": "^1.7.1",
     "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-pwa": "^4.5.12",
     "@vue/cli-service": "~4.5.0",
     "vue-template-compiler": "^2.6.11"
+  },
+  "vue": {
+    "pwa": {
+      "name": "Koala Menu",
+      "themeColor": "#00d1b2",
+      "msTileColor": "#ffffff",
+      "iconPaths": {
+        "favicon32": "img/icons/favicon-32x32.png",
+        "favicon16": "img/icons/favicon-16x16.png",
+        "appleTouchIcon": "img/icons/apple-touch-icon.png",
+        "maskIcon": "img/icons/safari-pinned-tab.svg",
+        "msTileImage": "img/icons/mstile-144x144.png"
+      }
+    }
   }
 }
