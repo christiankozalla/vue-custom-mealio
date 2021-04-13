@@ -1,6 +1,8 @@
 <template>
   <div class="container is-max-desktop mt-2 px-2">
-    <h1 class="title is-size-2 has-text-centered">Koala Menue</h1>
+    <h1 class="title is-size-2 pt-6 has-text-centered">
+      Koala Men<span id="svg-torque">u</span>
+    </h1>
     <h2 class="is-size-3 has-text-centered my-4">
       Create your weekly meal plan
     </h2>
@@ -12,6 +14,7 @@
     <div class="mx-6">
       <div
         class="box my-2 p-2 has-background-primary has-text-black has-text-centered is-size-5 is-clickable"
+        role="button"
         @click="openCookbookModal"
       >
         <span class="icon mr-3"
@@ -26,6 +29,7 @@
 
       <div
         class="box my-2 p-2 has-background-info has-text-black has-text-centered is-size-5 is-clickable"
+        role="button"
         @click="openDatePickerModal"
       >
         <span class="icon mr-3"
@@ -39,6 +43,7 @@
       </div>
       <button
         class="button is-danger is-size-5 is-fullwidth px-6"
+        role="button"
         @click="addMeal"
       >
         Add meal!
@@ -107,7 +112,7 @@
       </div>
     </div>
 
-    <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menue Week</h3>
+    <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menu Week</h3>
     <ul v-if="sortedMeals.length > 0">
       <transition-group name="fade">
         <li
@@ -320,6 +325,21 @@ export default {
     background-color: #555;
     border-radius: 2px;
   }
+}
+
+#svg-torque {
+  position: relative;
+}
+
+#svg-torque::before {
+  content: " ";
+  position: absolute;
+  top: -2rem;
+  right: -1.1rem;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+  background-image: url("../assets/koala-menue-torque-opt.svg");
 }
 
 .fade-enter-active,
