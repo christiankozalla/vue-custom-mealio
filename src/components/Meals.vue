@@ -42,10 +42,13 @@
         }}</span>
       </div>
       <button
-        class="button is-danger is-size-5 is-fullwidth px-6"
+        class="button is-danger has-text-black is-size-5 is-fullwidth px-6"
         role="button"
         @click="addMeal"
       >
+        <span class="icon mr-3"
+          ><img src="@/assets/add-circle-outline.svg" alt="Add Circle Icon"
+        /></span>
         Add meal!
       </button>
     </div>
@@ -112,7 +115,7 @@
       </div>
     </div>
 
-    <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menu Week</h3>
+    <h3 class="subtitle is-size-3 mt-5 has-text-centered">Your Menu</h3>
     <ul v-if="sortedMeals.length > 0">
       <transition-group name="fade">
         <li
@@ -159,7 +162,7 @@
       </div>
     </div>
     <div class="is-flex is-justify-content-space-between mb-3">
-      <button class="button is-link">
+      <button class="button is-info">
         <span class="icon mr-2"
           ><img src="@/assets/logo-twitter.svg" alt="Twitter Logo Icon"/></span
         >Tell your friends!
@@ -172,6 +175,17 @@
         Clear plan
       </button>
     </div>
+    <a
+      class="button is-fullwidth has-background-primary is-size-5"
+      rel="noopener"
+      target="_blank"
+      href="https://github.com/christiankozalla/vue-family-meal"
+    >
+      View Source Code on GitHub
+      <span class="icon ml-2">
+        <img src="@/assets/logo-github.svg" alt="GitHub logo"
+      /></span>
+    </a>
   </div>
 </template>
 

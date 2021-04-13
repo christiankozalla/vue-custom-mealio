@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,6 +13,16 @@
       type="image/svg+xml"
       href="<%= BASE_URL %>koala-menue-torque-opt.svg"
     />
+    <!-- ... other tags like title, link, charset, viewport -->
+    <meta property="og:title" content="Koala Menu - Weekly Meals" />
+    <meta
+      property="og:description"
+      content="Create your weekly meal plan, save to your browser for later!"
+    />
+    <meta property="og:image" content="<%= BASE_URL %>koala-menu-logo.png" />
+    <meta name="twitter:site" content="@CKozalla" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="@CKozalla" />
     <title>Koala Menu</title>
   </head>
   <body>
