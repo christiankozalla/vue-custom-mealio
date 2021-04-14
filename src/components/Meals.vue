@@ -354,7 +354,7 @@ export default {
   width: 50px;
   height: 50px;
   background-size: cover;
-  background-image: url("../assets/koala-menu-logo-50.png");
+  background-image: url("../assets/koala-menu-logo-60.png");
 }
 
 .fade-enter-active,

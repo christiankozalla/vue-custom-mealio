@@ -21,7 +21,9 @@
     "pwa": {
       "name": "Koala Menu",
       "themeColor": "#00d1b2",
-      "backgroundColor": "#ffffff",
+      "manifestOptions": {
+        "background_color": "#ffffff"
+      },
       "iconPaths": {
         "favicon32": "img/icons/favicon-32x32.png",
         "favicon16": "img/icons/favicon-16x16.png",
