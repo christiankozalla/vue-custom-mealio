@@ -348,12 +348,13 @@ export default {
 #svg-torque::before {
   content: " ";
   position: absolute;
-  top: -2rem;
+  top: -2.2rem;
   right: -1.1rem;
   z-index: 2;
   width: 50px;
   height: 50px;
-  background-image: url("../assets/koala-menue-torque-opt.svg");
+  background-size: cover;
+  background-image: url("../assets/koala-menu-logo-50.png");
 }
 
 .fade-enter-active,
