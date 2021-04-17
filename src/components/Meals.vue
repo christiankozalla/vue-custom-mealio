@@ -90,17 +90,84 @@
       <div class="modal-background" @click="isCookbookModalOpen = false"></div>
       <div class="modal-content">
         <div class="box">
-          <div class="is-flex is-justify-content-space-between">
+          <div
+            class="is-flex is-justify-content-space-between is-align-items-center"
+          >
             <h3 class="subtitle mt-4">Cookbook</h3>
-            <button
-              class="button is-danger"
-              @click="isCookbookModalOpen = false"
+            <span>
+              <button
+                class="button is-primary mr-3"
+                @click="showMealDialogAndFocusInput"
+              >
+                {{ showCreateNewMealInput ? "Close" : "Create new meal!" }}
+              </button>
+              <button
+                class="button is-danger"
+                @click="
+                  (isCookbookModalOpen = false),
+                    (showCreateNewMealInput = false)
+                "
+              >
+                &times;
+              </button>
+            </span>
+          </div>
+          <transition name="fade">
+            <div
+              v-show="showCreateNewMealInput"
+              class="box has-background-primary"
             >
-              &times;
-            </button>
+              <p class="is-size-6 mb-3">
+                <span class="icon mr-1"
+                  ><img
+                    src="../assets/koala-menu-logo-60.png"
+                    alt="Koala Menu Logo"
+                /></span>
+                Add any meals you like to your personal cookbook
+              </p>
+
+              <div
+                class="is-flex is-justify-content-space-between is-align-items-center mb-2"
+              >
+                <input
+                  class="input is-primary is-rounded mr-2"
+                  type="text"
+                  placeholder="Type the name of your new meal"
+                  ref="createNewMealInput"
+                  v-model="newMealToCreate"
+                  @keydown.enter="createNewMeal"
+                />
+                <button
+                  class="button is-primary is-light"
+                  @click="createNewMeal"
+                >
+                  Create!
+                </button>
+              </div>
+            </div>
+          </transition>
+          <div v-if="cookbook.length === 0" class="content mt-2">
+            <hr />
+            <p class="subtitle">Oh, you must be new here!</p>
+            <p>
+              You can create your own meals and add them to your personal
+              cookbook.
+            </p>
+            <div class="columns">
+              <p class="column is-four-fifths">
+                It's going to be stored safely in your browser just for you!
+              </p>
+              <div class="column">
+                <img
+                  src="../assets/koala-menu-logo-60.png"
+                  alt="Koala Menu Logo"
+                  style="display: block; margin-left: auto;"
+                />
+              </div>
+            </div>
           </div>
           <div
-            v-for="{ name } in cookbook.dishes"
+            v-for="{ name } in cookbook"
             :key="name"
             class="box is-clickable"
             :class="{
@@ -190,7 +257,6 @@
 </template>
 
 <script>
-import cookbook from "@/assets/cookbook.json";
 export default {
   name: "Meals",
   data() {
@@ -199,10 +265,12 @@ export default {
       newMeal: "",
       newDate: "",
       newMilliDate: null,
-      cookbook: {},
+      cookbook: [],
+      newMealToCreate: "",
       showQuestion: false,
       isCookbookModalOpen: false,
       isDatePickerModalOpen: false,
+      showCreateNewMealInput: false,
       weekDayMap: [
         "Sunday",
         "Monday",
@@ -292,6 +360,22 @@ export default {
 
       return { day: formattedDate, milliDate: milliDate };
     },
+    showMealDialogAndFocusInput() {
+      this.showCreateNewMealInput = !this.showCreateNewMealInput;
+      this.$nextTick(function() {
+        this.$refs.createNewMealInput.focus();
+      });
+    },
+    createNewMeal() {
+      // Sanitize input from user with regex
+      if (this.newMealToCreate) {
+        this.cookbook.push({ name: this.newMealToCreate });
+        this.newMealToCreate = "";
+        this.showCreateNewMealInput = false;
+      } else {
+        this.$refs.createNewMealInput.focus();
+      }
+    },
     resetMeal() {
       this.newMeal = "";
       this.newDate = "";
@@ -310,7 +394,13 @@ export default {
     },
   },
   beforeMount() {
-    this.cookbook = cookbook;
+    if (localStorage.getItem("cookbook")) {
+      let personalCookbook = JSON.parse(localStorage.getItem("cookbook"));
+      this.cookbook = personalCookbook;
+    } else {
+      localStorage.setItem("cookbook", this.cookbook);
+    }
+
     let storedMeals = localStorage.getItem("meals");
     if (storedMeals) {
       let storedMealsArray = JSON.parse(storedMeals);
@@ -318,8 +408,8 @@ export default {
     }
   },
   beforeUpdate() {
-    let stringifiedMeals = JSON.stringify(this.meals);
-    localStorage.setItem("meals", stringifiedMeals);
+    localStorage.setItem("meals", JSON.stringify(this.meals));
+    localStorage.setItem("cookbook", JSON.stringify(this.cookbook));
   },
 };
 </script>
