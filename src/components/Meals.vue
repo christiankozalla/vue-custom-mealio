@@ -252,7 +252,7 @@
       class="button is-fullwidth has-background-primary is-size-5 mb-3"
       rel="nofollow noopener noreferrer"
       target="_blank"
-      href="https://github.com/christiankozalla/vue-family-meal"
+      href="https://github.com/christiankozalla/vue-custom-mealio"
     >
       View Source Code on GitHub
       <span class="icon ml-2">
