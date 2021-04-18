@@ -1,7 +1,7 @@
 <template>
   <div class="container is-max-desktop mt-2 px-2">
     <h1 class="title is-size-2 pt-6 has-text-centered">
-      Koala Men<span id="svg-torque">u</span>
+      Meal<span id="svg-torque">io</span>
     </h1>
     <h2 class="is-size-3 has-text-centered my-4">
       Create your weekly meal plan
@@ -123,7 +123,7 @@
                     src="../assets/koala-menu-logo-60.png"
                     alt="Koala Menu Logo"
                 /></span>
-                Add any meals you like to your personal cookbook
+                Add any meal to your personal cookbook
               </p>
 
               <div
@@ -146,7 +146,7 @@
               </div>
             </div>
           </transition>
-          <div v-if="cookbook.length === 0" class="content mt-2">
+          <div v-if="cookbook.length === 0" class="content px-4 mt-2">
             <hr />
             <p class="subtitle">Oh, you must be new here!</p>
             <p>
@@ -229,11 +229,17 @@
       </div>
     </div>
     <div class="is-flex is-justify-content-space-between mb-2">
-      <button class="button is-info">
+      <a
+        class="button is-info"
+        href="https://twitter.com/intent/tweet?text=Hey%20I%20am%20using%20Mealio%20as%20my%20weekly%20meal%20planner%0A%0A&amp;url=https%3A%2F%2Fmealio.surge.sh%0A&amp;hashtags=mealio&amp;via=CKoalla"
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+        aria-label="Share this with Twitter. (opens in new window)"
+      >
         <span class="icon mr-2"
           ><img src="@/assets/logo-twitter.svg" alt="Twitter Logo Icon"/></span
         >Tell your friends!
-      </button>
+      </a>
       <button
         v-show="!showQuestion"
         class="button is-danger"
@@ -244,7 +250,7 @@
     </div>
     <a
       class="button is-fullwidth has-background-primary is-size-5 mb-3"
-      rel="noopener"
+      rel="nofollow noopener noreferrer"
       target="_blank"
       href="https://github.com/christiankozalla/vue-family-meal"
     >
