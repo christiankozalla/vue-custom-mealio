@@ -231,7 +231,7 @@
     <div class="is-flex is-justify-content-space-between mb-2">
       <a
         class="button is-info"
-        href="https://twitter.com/intent/tweet?text=Hey%20I%20am%20using%20Mealio%20as%20my%20weekly%20meal%20planner%0A%0A&amp;url=https%3A%2F%2Fmealio.surge.sh%0A&amp;hashtags=mealio&amp;via=CKoalla"
+        href="https://twitter.com/intent/tweet?text=Hey%20I%20am%20using%20Mealio%20as%20my%20weekly%20meal%20planner%0A%0A&amp;url=https%3A%2F%2Fmealio.surge.sh%0A&amp;hashtags=mealio&amp;via=CKozalla"
         target="_blank"
         rel="nofollow noopener noreferrer"
         aria-label="Share this with Twitter. (opens in new window)"
