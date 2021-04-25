@@ -19,7 +19,7 @@
   },
   "vue": {
     "pwa": {
-      "name": "Koala Menu",
+      "name": "Mealio",
       "themeColor": "#00d1b2",
       "manifestOptions": {
         "background_color": "#ffffff"
