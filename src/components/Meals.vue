@@ -169,14 +169,27 @@
           <div
             v-for="{ name } in cookbook"
             :key="name"
-            class="box is-clickable"
+            class="box columns mt-2"
             :class="{
               'has-background-primary': newMeal === name,
               'has-background-link-light': newMeal !== name,
             }"
-            @click="chooseMeal(name)"
           >
-            {{ name }}
+            <div
+              class="column is-clickable is-four-fifths"
+              @click="chooseMeal(name)"
+            >
+              {{ name }}
+            </div>
+            <div class="column">
+              <button
+                class="delete is-block"
+                style="margin-left: auto;"
+                @click="removeMealFromCookbook(name)"
+              >
+                &times;
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -391,6 +404,15 @@ export default {
 
       if (mealIndex !== -1) {
         this.meals.splice(mealIndex, 1);
+      }
+    },
+    removeMealFromCookbook(name) {
+      let mealIndex = this.cookbook.findIndex((meal) => meal.name === name);
+      if (mealIndex > -1) {
+        this.cookbook.splice(mealIndex, 1);
+        this.newMeal = "";
+      } else {
+        console.log("Meal not found!");
       }
     },
     clearStorage() {
