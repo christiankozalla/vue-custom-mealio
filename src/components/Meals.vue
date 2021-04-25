@@ -91,9 +91,9 @@
       <div class="modal-content">
         <div class="box">
           <div
-            class="is-flex is-justify-content-space-between is-align-items-center"
+            class="is-flex is-justify-content-space-between is-align-items-center is-flex-wrap-wrap"
           >
-            <h3 class="subtitle mt-4">Cookbook</h3>
+            <h3 class="subtitle mt-4 ">Cookbook</h3>
             <span>
               <button
                 class="button is-primary mr-3"
@@ -169,22 +169,22 @@
           <div
             v-for="{ name } in cookbook"
             :key="name"
-            class="box columns mt-2"
+            class="box mt-2"
             :class="{
               'has-background-primary': newMeal === name,
               'has-background-link-light': newMeal !== name,
             }"
           >
             <div
-              class="column is-clickable is-four-fifths"
+              class="is-inline-block "
+              style="width: 90%;"
               @click="chooseMeal(name)"
             >
               {{ name }}
             </div>
-            <div class="column">
+            <div class="is-inline-block" style="width: 10%;">
               <button
-                class="delete is-block"
-                style="margin-left: auto;"
+                class="delete p-2 is-pulled-right"
                 @click="removeMealFromCookbook(name)"
               >
                 &times;
