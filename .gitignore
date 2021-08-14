@@ -2,6 +2,9 @@
 frontend-app/node_modules
 frontend-app/dist
 
+api/node_modules
+api/dist
+
 
 # local env files
 frontend-app/.env.local
