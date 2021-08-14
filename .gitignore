@@ -1,11 +1,11 @@
 .DS_Store
-node_modules
-/dist
+frontend-app/node_modules
+frontend-app/dist
 
 
 # local env files
-.env.local
-.env.*.local
+frontend-app/.env.local
+frontend-app/.env.*.local
 
 # Log files
 npm-debug.log*
