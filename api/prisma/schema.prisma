@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./mealio.db"
+}
+
+// model User {
+//   id    Int    @id @default(autoincrement())
+//   name  String
+//   slots Slot[]
+// }
+
+// model Slot {
+//   id          Int       @id @default(autoincrement())
+//   description String?
+//   createdAt   DateTime  @default(now())
+//   startedAt   DateTime?
+//   finishedAt  DateTime?
+//   breaks      Break[]
+//   user        User      @relation(fields: [userId], references: [id])
+//   userId      Int
+// }
+
+// model Break {
+//   startedAt  DateTime @unique @default(now())
+//   finishedAt DateTime
+//   slot       Slot     @relation(fields: [slotId], references: [id])
+//   slotId     Int
+// }

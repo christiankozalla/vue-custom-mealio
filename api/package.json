@@ -1,0 +1,32 @@
+{
+  "name": "time-tracker-api",
+  "version": "1.0.0",
+  "description": "INCLOUD Time Tracker API",
+  "repository": {
+    "url": "https://github.com/christiankozalla/incloud-time-tracker.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "prisma generate && tsc",
+    "start": "node dist/index.js",
+    "compile": "tsc",
+    "db:push": "prisma db push",
+    "format": "npx prettier --write \"src/**/*.ts\"",
+    "dev": "ts-node-dev --respawn ./src/index.ts"
+  },
+  "author": "Christian Kozalla",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^9.1.3",
+    "@hapi/hapi": "^20.1.5",
+    "@prisma/client": "^2.29.0"
+  },
+  "devDependencies": {
+    "@types/hapi__hapi": "^20.0.9",
+    "prettier": "^2.3.2",
+    "prisma": "^2.29.0",
+    "ts-node": "^10.2.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
+  }
+}
