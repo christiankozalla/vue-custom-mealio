@@ -23,7 +23,7 @@
             alt="Restaurant Icon for Meal"
         /></span>
         <span class="meal-text-chosen">{{
-          newMeal ? newMeal : "Choose your meal!"
+          newMeal || "Choose your meal!"
         }}</span>
       </div>
 
@@ -38,7 +38,7 @@
             alt="Restaurant Icon for Meal"
         /></span>
         <span class="meal-text-chosen">{{
-          newDate ? newDate : "Choose the date!"
+          newDate || "Choose the date!"
         }}</span>
       </div>
       <button
@@ -199,11 +199,11 @@
     <ul v-if="sortedMeals.length > 0">
       <transition-group name="fade">
         <li
-          v-for="{ meal, date, id } in sortedMeals"
+          v-for="{ name, date, id } in sortedMeals"
           :key="id"
           class="box my-2 p-3 has-text-black is-size-5 has-background-info is-flex is-justify-content-space-between is-align-items-center"
         >
-          {{ date }} - {{ meal }}
+          {{ date }} - {{ name }}
           <button class="delete ml-1" @click="removeMeal(id)">
             &times;
           </button>
@@ -314,23 +314,20 @@ export default {
     },
   },
   methods: {
-    generateUniqueId() {
-      return (
-        "_" +
-        Math.random()
-          .toString(36)
-          .substring(2, 9)
-      );
-    },
     addMeal() {
       if (this.newMeal && this.newDate) {
-        this.meals.push({
-          id: this.generateUniqueId(),
-          meal: this.newMeal,
+        const newMeal = {
+          name: this.newMeal,
           date: this.newDate,
           milliDate: this.newMilliDate,
-        });
-        localStorage.setItem("meals", JSON.stringify(this.meals));
+        };
+
+        this.updateApi("meals", "POST", newMeal)
+          .then((newMeal) => {
+            if (newMeal.id) this.meals.push(newMeal);
+          })
+          .catch((err) => console.error(err));
+
         this.resetMeal();
       }
     },
@@ -400,11 +397,20 @@ export default {
       this.newDate = "";
     },
     removeMeal(mealId) {
-      let mealIndex = this.meals.findIndex((meal) => meal.id === mealId);
-
-      if (mealIndex !== -1) {
-        this.meals.splice(mealIndex, 1);
-      }
+      // let mealIndex = this.meals.findIndex((meal) => meal.id === mealId);
+      let newMeals = this.meals.filter((meal) => meal.id !== mealId);
+      fetch(`http://localhost:4000/meals/${mealId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (res.status === 201) {
+            this.meals = newMeals;
+          }
+        })
+        .catch((err) => console.error(err));
     },
     removeMealFromCookbook(name) {
       let mealIndex = this.cookbook.findIndex((meal) => meal.name === name);
@@ -420,25 +426,73 @@ export default {
       this.showQuestion = false;
       localStorage.clear();
     },
+    async updateApi(endpoint, method, data) {
+      try {
+        const response = await fetch(`http://localhost:4000/${endpoint}`, {
+          method: `${method}`,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        const jsonResponse = response.json();
+        return jsonResponse;
+      } catch (err) {
+        console.error(err);
+      }
+    },
   },
   beforeMount() {
-    if (localStorage.getItem("cookbook")) {
-      let personalCookbook = JSON.parse(localStorage.getItem("cookbook"));
-      this.cookbook = personalCookbook;
-    } else {
-      localStorage.setItem("cookbook", this.cookbook);
-    }
+    // if (localStorage.getItem("cookbook")) {
+    //   let personalCookbook = JSON.parse(localStorage.getItem("cookbook"));
+    //   this.cookbook = personalCookbook;
+    //   for (let i = 0; i < personalCookbook.length; i++) {
+    //     fetch(`http://localhost:4000/cookbook`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(personalCookbook[i]),
+    //     })
+    //       .then((response) => response.json())
+    //       .then((jsonResp) => console.log(jsonResp))
+    //       .catch((err) => console.error(err));
+    //   }
+    // } else {
+    //   localStorage.setItem("cookbook", this.cookbook);
+    // }
+
+    fetch("http://localhost:4000/cookbook")
+      .then((cookbook) => cookbook.json())
+      .then((jsonCookbook) => {
+        this.cookbook = jsonCookbook;
+      })
+      .catch((err) => console.error(err));
 
     let storedMeals = localStorage.getItem("meals");
     if (storedMeals) {
       let storedMealsArray = JSON.parse(storedMeals);
       this.meals = storedMealsArray;
     }
+    fetch("http://localhost:4000/meals")
+      .then((meals) => meals.json())
+      .then((jsonMeals) => {
+        this.meals = jsonMeals;
+      })
+      .catch((err) => console.error(err));
   },
-  beforeUpdate() {
-    localStorage.setItem("meals", JSON.stringify(this.meals));
-    localStorage.setItem("cookbook", JSON.stringify(this.cookbook));
-  },
+  // beforeUpdate() {
+  //   localStorage.setItem("meals", JSON.stringify(this.meals));
+  //   localStorage.setItem("cookbook", JSON.stringify(this.cookbook));
+  //   for (let i = 0; i < this.cookbook.length; i++) {
+  //     this.postData("cookbook", this.cookbook[i]);
+  //   }
+
+  //   for (let i = 0; i < this.meals.length; i++) {
+  //     this.postData("meals", this.meals[i]);
+  //   }
+  // },
 };
 </script>
 
